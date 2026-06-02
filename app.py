@@ -52,9 +52,9 @@ def stock():
         data = res.json() #解析後的資料
         # 判斷是否成功
         if data["stat"] == "OK":
-    answer =f("前一天收盤價：",data["data"][-1][6]) #return render_template('stock.html', question=question, answer=answer)
+            answer =f("前一天收盤價：",data["data"][-1][6]) #return render_template('stock.html', question=question, answer=answer)
         else:
-    answer =("查無資料，請確認股票代號或日期") #return render_template('stock.html', question=question, answer=answer)
+            answer =("查無資料，請確認股票代號或日期") #return render_template('stock.html', question=question, answer=answer)
         # 4. 回傳答案給使用者
     return render_template('stock.html', question=question, answer=answer)
     # GET 時給空白欄位
