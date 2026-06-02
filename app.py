@@ -44,13 +44,20 @@ def ask():
 def stock():
     if request.method == 'POST':
         # 2. 讀取使用者輸入的股票號碼
-        question = request.form.get('question', '').strip()
+        stock_no = request.form.get('stock_no', '').strip()
         # 3. 查詢股票號碼的收盤價
-        answer = zh_ko_dict.get(question, "抱歉，我目前沒有這個股票號碼。")
+        url = f"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&stockNo={stock_no}"
+        res = requests.get(url) #原始
+        data = res.json() #解析後的資料
+        # 判斷是否成功
+   if data["stat"] == "OK":
+     answer =f("前一天收盤價：",data["data"][-1][6]) #return render_template('stock.html', question=question, answer=answer)
+   else:
+    answer =("查無資料，請確認股票代號或日期") #return render_template('stock.html', question=question, answer=answer)
         # 4. 回傳答案給使用者
         return render_template('stock.html', question=question, answer=answer)
     # GET 時給空白欄位
-    return render_template('stock.html', question="", answer="")
+    return render_template('stock.html', stock_no="", answer="")
 
 if __name__ == '__main__':
     # 開發用；部署用 gunicorn（見下方）
