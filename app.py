@@ -47,12 +47,13 @@ def stock():
         stock_no = request.form.get('stock_no', '').strip()
         #date = input("請輸入查詢年月（格式：YYYYMMDD，例如 20260301）：")
         # 3. 查詢股票號碼的收盤價
-        url = f"https://openapi.twse.com.tw/v1／exchangeReport/STOCK_DAY?response=json&stockNo={stock_no}"
+        url = f"https://mis.twse.com.tw/stock/api/getStocklnfo.jsp?ex_ch=tse_{stock_no}.tw"
         res = requests.get(url) #原始
         data = res.json() #解析後的資料
+        data["msgArray"][O]["y"]
         # 判斷是否成功
         if data["stat"] == "OK":
-            answer =f("前一天收盤價：",data["data"][-1][6]) #return render_template('stock.html', question=question, answer=answer)
+            answer =f("前一天收盤價：",data["msgArray"][0]["y"]) #return render_template('stock.html', question=question, answer=answer)
         else:
             answer =("查無資料，請確認股票代號或日期") #return render_template('stock.html', question=question, answer=answer)
         # 4. 回傳答案給使用者
